@@ -11,7 +11,7 @@ env:
 
 jobs:
   deploy:
-    needs: ci-workflow
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
