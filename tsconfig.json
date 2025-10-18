@@ -22,16 +22,13 @@
     }
   },
   "include": [
-  "quote/*",
-  "payments/*", 
-  "leases/*",
-  "health-check/*",
-    "src/**/*",
-    "tests/**/*"
+    "functions/**/*",
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
+    "tests",
     "**/*.test.ts",
     "**/*.spec.ts"
   ]

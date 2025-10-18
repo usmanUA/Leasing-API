@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Leasing Backend API with Azure Functions v4",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy:configs",
+    "copy:configs": "node -e \"require('fs').cpSync('functions', 'dist/functions', {recursive: true, filter: (src) => src.endsWith('function.json')})\"",
     "watch": "tsc -w",
     "prestart": "npm run build",
     "start": "func start",
@@ -35,6 +36,6 @@
     "typescript": "^4.9.5"
   },
   "engines": {
-    "node": "24.x"
+    "node": "22.x"
   }
 }
