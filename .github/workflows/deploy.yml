@@ -6,7 +6,7 @@ on:
 env:
   AZURE_FUNCTIONAPP_NAME: 'LeasingAPI'
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
-  NODE_VERSION: '14.x'
+  NODE_VERSION: '22.x'
 
 jobs:
   deploy:
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
             node-version: ${{ env.NODE_VERSION }}
             cache: 'npm'
@@ -22,9 +22,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Deploy LeasingAPI to Azure Functions
         uses: Azure/functions-action@v1
         with:
               app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
               package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-              publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
