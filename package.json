@@ -1,7 +1,7 @@
 {
   "name": "leasing-backend",
   "version": "1.0.0",
-  "main": "functions/index.js",
+  "main": "dist/functions/**/*.js",
   "description": "Leasing Backend API with Azure Functions v4",
   "scripts": {
     "build": "tsc",

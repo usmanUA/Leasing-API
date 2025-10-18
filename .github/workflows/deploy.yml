@@ -31,6 +31,10 @@ jobs:
           cp package.json dist/
           cp package-lock.json dist/
 
+      - name: Update package.json main path for Azure
+        run: |
+          cd dist
+          sed -i 's|"main": "dist/functions/\*\*/\*.js"|"main": "functions/index.js"|g' package.json
       - name: Install production dependencies
         run: |
           cd dist
