@@ -6,7 +6,7 @@ on:
 env:
   AZURE_FUNCTIONAPP_NAME: 'LeasingAPI'
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './dist'
-  NODE_VERSION: '22.x'
+  NODE_VERSION: '20.x'
 
 jobs:
   deploy:
@@ -25,6 +25,17 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
+      - name: Copy required files to dis
+        run: |
+          cp host.json dist/
+          cp package.json dist/
+          cp package-lock.json dist/
+
+      - name: Install production dependencies
+        run: |
+          cd dist
+          npm ci --omit=dev
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -33,5 +44,6 @@ jobs:
       - name: Deploy LeasingAPI to Azure Functions
         uses: Azure/functions-action@v1
         with:
-              app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-              package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          respect-funcignore: true
