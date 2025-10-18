@@ -1,4 +1,4 @@
-import { handleRecordPayment } from "../src/handlers/payment/record-payment";
+import { handleRecordPayment } from "../../src/handlers/payment/record-payment";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { logger } from "@/lib/logger";
 

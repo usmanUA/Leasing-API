@@ -1,4 +1,4 @@
-import { handleCalculateQuote } from "../src/handlers/quote/calculate-quote";
+import { handleCalculateQuote } from "../../src/handlers/quote/calculate-quote";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { logger } from "@/lib/logger";
 
