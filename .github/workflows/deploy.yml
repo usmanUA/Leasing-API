@@ -5,7 +5,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'LeasingAPI'
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './dist'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './deployment'
   NODE_VERSION: '20.x'
 
 jobs:
@@ -25,8 +25,10 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
-      - name: Copy required files to dis
+      - name: Create Azure compatible delpyment package
         run: |
+          mkdir -r deployment
+          cp -r dist/functions/* deployment
           cp host.json dist/
           cp package.json dist/
           cp package-lock.json dist/
@@ -34,7 +36,7 @@ jobs:
       - name: Update package.json main path for Azure
         run: |
           cd dist
-          sed -i 's|"main": "dist/functions/\*\*/\*.js"|"main": "functions/index.js"|g' package.json
+          sed -i 's|"main": "dist/functions/\*\*/\*.js"||g' package.json
       - name: Install production dependencies
         run: |
           cd dist
