@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Deploy LeasingAPI to Azure Functions
-        uses: azure/webapps-deploy@v3
+        uses: Azure/functions-action@v1
         with:
               app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
               package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
