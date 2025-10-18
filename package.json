@@ -1,10 +1,10 @@
 {
   "name": "leasing-backend",
   "version": "1.0.0",
+  "main": "dist/functions/**/*.js",
   "description": "Leasing Backend API with Azure Functions v4",
   "scripts": {
-    "build": "tsc && npm run copy:configs",
-    "copy:configs": "node -e \"require('fs').cpSync('functions', 'dist/functions', {recursive: true, filter: (src) => src.endsWith('function.json')})\"",
+    "build": "tsc",
     "watch": "tsc -w",
     "prestart": "npm run build",
     "start": "func start",
@@ -16,16 +16,17 @@
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
+    "20": "^3.1.9",
+    "@azure/functions": "^4.8.0",
     "@prisma/client": "^4.16.2",
     "prisma": "^4.16.2",
     "uuid": "^8.3.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@azure/functions": "^3.2.0",
     "@types/axios": "^0.14.4",
     "@types/jest": "^29.5.5",
-    "@types/node": "14.x",
+    "@types/node": "20.x",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
@@ -36,6 +37,6 @@
     "typescript": "^4.9.5"
   },
   "engines": {
-    "node": "22.x"
+    "node": "20.x"
   }
 }

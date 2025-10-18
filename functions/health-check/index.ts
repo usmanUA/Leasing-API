@@ -1,15 +1,16 @@
-import { AzureFunction, Context } from "@azure/functions";
+import { app, HttpResponseInit } from "@azure/functions";
 import { PrismaClient } from '@prisma/client';
 
+// NOTE: Why a new prisma here?
 const prisma = new PrismaClient();
 
-export const httpTrigger: AzureFunction = async (context: Context): Promise<void> => {
+export async function healthCheck(): Promise<HttpResponseInit> {
     try {
         await prisma.$queryRaw`SELECT 1`;
         
-        context.res = {
+        return {
             status: 200,
-            body: {
+            jsonBody: {
                 status: "healthy",
                 database: "connected", 
                 timestamp: new Date().toISOString(),
@@ -19,9 +20,9 @@ export const httpTrigger: AzureFunction = async (context: Context): Promise<void
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         
-        context.res = {
+        return {
             status: 503,
-            body: {
+            jsonBody: {
                 status: "unhealthy",
                 database: "disconnected",
                 error: errorMessage,
@@ -30,3 +31,10 @@ export const httpTrigger: AzureFunction = async (context: Context): Promise<void
         };
     }
 };
+
+app.http("healthCheck", {
+    route: "health-check",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: healthCheck
+})

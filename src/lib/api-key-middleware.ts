@@ -2,7 +2,7 @@ import { HttpRequest } from "@azure/functions";
 import { logger } from "./logger";
 
 export const validateApiKey = (req: HttpRequest): boolean => {
-    const apiKey = req.headers["x-api-key"];
+    const apiKey = req.headers.get("x-api-key");
     const validApiKey = process.env.API_KEY;
 
     if (!validApiKey) {

@@ -1,22 +1,33 @@
 import { handleRecordPayment } from "../../src/handlers/payment/record-payment";
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { logger } from "@/lib/logger";
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { logger } from "../../src/lib/logger";
 
-export const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest) => {
+export async function registerPayment(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
-	if (req.method === "POST") {
-	    await handleRecordPayment(context, req);
-	} else {
-	context.res = {
-	    status: 405,
-	    body: { error: "This method is not allowed."}
+	if (request.method === "POST") {
+	    const paymentResponse = await handleRecordPayment(context, request);
+	    return {
+		status: 200,
+		jsonBody: paymentResponse
 	    };
+	} else {
+	    return {
+		status: 405,
+		jsonBody: { error: "This method is not allowed."}
+		};
 	}
     } catch (error) {
 	logger.error("Error getting lease")
-	context.res = {
+	return {
 	    status: 500,
-	    body: { error: "Internal Server Error"}
-	}
+	    jsonBody: { error: "Internal Server Error"}
+	};
     }
-};
+}
+
+app.http("registerPayment", {
+    route: "payments",
+    methods: ["POST"],
+    authLevel: "anonymous",
+    handler: registerPayment
+})

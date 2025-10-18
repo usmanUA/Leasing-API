@@ -1,41 +1,51 @@
-import { Context, HttpRequest } from "@azure/functions";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { validateApiKey } from "../../lib/api-key-middleware";
 import { parsePayment } from "../../application/payment-service";
 import { PaymentInputSchema } from "../../lib/validation";
 import { registerPayment } from "../../persistence/payment-repository";
-import { PaymentInput } from "@/domain/payment";
+import { PaymentInput } from "../../domain/payment";
+import { logger } from "../../../src/lib/logger";
 
-export async function handleRecordPayment(context: Context, req: HttpRequest) {
+export async function handleRecordPayment(context: InvocationContext, request: HttpRequest): Promise<HttpResponseInit> {
+    const requestId = context.invocationId;
 
-    if (validateApiKey(req) === false) {
-	context.res = { status: 401, detail: { error: "Unauthorized"}};
-	return;
-    };
-
-    const validatedPaymentInput = PaymentInputSchema.safeParse(req.body);
-    if (validatedPaymentInput.success === false) {
-	context.res = {
-	    status: 400,
-	    body: { error: "Invalid input", details: validatedPaymentInput.error.message }
-	}
-	return;
-    }
     try {
+	if (validateApiKey(request) === false) {
+	    logger.error(`[${requestId}] Unauthorized register payment attempt`)
+	    return {
+		status: 401, 
+		jsonBody: { error: "Unauthorized"}
+	    };
+	}
+
+	const validatedPaymentInput = PaymentInputSchema.safeParse(request.body);
+	if (validatedPaymentInput.success === false) {
+	    logger.info(`[${requestId}] Invalid payment data`)
+	    return {
+		status: 400,
+		jsonBody: { error: "Invalid input", details: validatedPaymentInput.error.message }
+	    };
+	}
+	logger.info(`[${requestId}] Registering payment for lease ID: ${validatedPaymentInput.data.leaseId}`);
 	const paymentInput: PaymentInput = validatedPaymentInput.data
 	const payment = parsePayment(paymentInput);
 	await registerPayment(payment);
-	context.res = { status: 200, body: payment }
+	logger.info(`[${requestId}] Payment for lease ID: ${validatedPaymentInput.data.leaseId} succussfully registered`);
+	return {
+	    status: 200,
+	    jsonBody: payment
+	};
     } catch (error) {
 	if (error instanceof Error) {
-	    context.res = {
+	    return {
 		status: 500,
-		body: { error: "Failed to register payment", details: error.message }
-	    }
+		jsonBody: { error: "Failed to register payment", details: error.message }
+	    };
 	} else {
-	    context.res = {
+	    return {
 		status: 500,
-		body: { error: "Failed to register payment", details: String(error) }
-	    }
+		jsonBody: { error: "Failed to register payment", details: String(error) }
+	    };
 	}
-    };
+    }
 };

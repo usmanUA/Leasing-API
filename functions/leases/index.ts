@@ -1,28 +1,64 @@
-import { logger } from "@/lib/logger";
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { logger } from "../../src/lib/logger";
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { handleCreateLease } from "../../src/handlers/lease/create-lease";
 import { handleGetLease } from "../../src/handlers/lease/get-lease";
 
-
-export const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest) => {
-    const method = req.method;
-
+export async function createLease(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
-	if (method === "POST") {
-	    await handleCreateLease(context, req);
-	} else if (req.method === "GET") {
-	    await handleGetLease(context, req);
+	if (request.method === "POST") {
+	    const leaseResponse = await handleCreateLease(context, request);
+	    return {
+		status: 200,
+		jsonBody: leaseResponse
+	    };
 	} else {
-	context.res = {
-	    status: 405,
-	    body: { error: "This method is not allowed."}
+	    return {
+		status: 200,
+		jsonBody: { error: "This method is not allowed."}
 	    };
 	}
     } catch (error) {
 	logger.error("Error in lease creating endpoint")
-	context.res = {
-	    status: 500,
-	    body: { error: "Internal Server Error"}
-	}
+	    return {
+		status: 200,
+		jsonBody: { error: "Internal Server Error"}
+	    };
     }
-};
+}
+
+export async function getLease(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    try {
+	if (request.method === "GET") {
+	    const lease = await handleGetLease(context, request);
+	    return {
+		status: 200,
+		jsonBody: lease
+	    };
+	} else {
+	    return {
+		status: 200,
+		jsonBody: { error: "This method is not allowed."}
+	    };
+	}
+    } catch (error) {
+	logger.error("Error in lease creating endpoint")
+	    return {
+		status: 200,
+		jsonBody: { error: "Internal Server Error"}
+	    };
+    }
+}
+
+app.http("handleCreateLeases", {
+    route: "leases",
+    methods: ["POST"],
+    authLevel: "anonymous",
+    handler: createLease
+})
+
+app.http("handleGetLeases", {
+    route: "leases/{id}",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: getLease
+})

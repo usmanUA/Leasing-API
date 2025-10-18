@@ -1,22 +1,34 @@
 import { handleCalculateQuote } from "../../src/handlers/quote/calculate-quote";
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { logger } from "@/lib/logger";
+import { app, HttpRequest, HttpResponseInit } from "@azure/functions";
+import { logger } from "../../src/lib/logger";
 
-export const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest) => {
+// TODO: use context logs? logger?
+export async function getQuote(request: HttpRequest): Promise<HttpResponseInit> {
     try {
-	if (req.method === "GET") {
-	    await handleCalculateQuote(context, req);
-	} else {
-	    context.res = {
-		status: 405,
-		body: { error: "This method is not allowed."}
+	if (request.method === "GET") {
+	    const quote = await handleCalculateQuote(request);
+	    return {
+		status: 200,
+		jsonBody: quote,
 		};
-	    }
+	} else {
+	    return {
+		status: 405,
+		jsonBody: { error: "This method is not allowed."}
+		};
+	}
     } catch (error) {
 	logger.error("Error getting quote")
-	context.res = {
+	return {
 	    status: 500,
-	    body: { error: "Internal Server Error"}
-	}
+	    jsonBody: { error: "Internal Server Error"}
+	};
     }
 }
+
+app.http("calculateQuote", {
+    route: "quote",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: getQuote
+});

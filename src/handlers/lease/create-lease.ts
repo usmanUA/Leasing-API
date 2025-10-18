@@ -1,31 +1,30 @@
 import { LeaseInputSchema } from "../../lib/validation";
 import { validateApiKey } from "../../lib/api-key-middleware";
 import { createLease } from "../../persistence/lease-repository";
-import { Context, HttpRequest } from "@azure/functions";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { parseLease } from "../../application/lease-service";
 import { LeaseInput, Lease } from "../../domain/lease";
-import { logger } from "@/lib/logger";
+import { logger } from "../../../src/lib/logger";
 
-export async function handleCreateLease(context: Context, req: HttpRequest): Promise<void> {
+export async function handleCreateLease(context: InvocationContext, request: HttpRequest): Promise<HttpResponseInit> {
     const requestId = context.invocationId;
 
     try {
-	if (validateApiKey(req) === false) {
+	if (validateApiKey(request) === false) {
 	    logger.error(`[${requestId}] Unauthorized lease creation attempt`)
-	    context.res = {
+	    return {
 		    status: 401,
-		    body: { error: "Unauthorized", message: "Invalid or missing API key"}
+		    jsonBody: { error: "Unauthorized", message: "Invalid or missing API key"}
 		};
-	    return;
 	}
 
-	const validatedLeaseInput = LeaseInputSchema.safeParse(req.body);
+	const validatedLeaseInput = LeaseInputSchema.safeParse(await request.json());
 	if (validatedLeaseInput.success === false) {
-	    context.res = {
+	    logger.info(`[${requestId}] Invalid lease data`)
+	    return {
 		status: 400,
-		body: { error: "Invalid input", details: validatedLeaseInput.error.message}
+		jsonBody: { error: "Invalid input", details: validatedLeaseInput.error.message}
 	    };
-	    return;
 	}
 
 	logger.info(`[${requestId}] Creating lease for company: ${validatedLeaseInput.data.companyId}`)
@@ -35,24 +34,20 @@ export async function handleCreateLease(context: Context, req: HttpRequest): Pro
 	const leaseId = await createLease(lease);
 	logger.info(`[${requestId}] Lease created successfully: ${leaseId}`);
 
-	context.res = {
+	return {
 	    status: 200,
-	    Headers: {
-		"Content-Type": "applicatoin/json",
-		"Location": `/api/lease/%{leaseId}`
-	    },
-	    body: lease
+	    jsonBody: lease
 	};
     } catch (error) {
 	if (error instanceof Error) {
-	context.res = {
+	return {
 	    status: 500,
-	    body: { error: "Failed to create lease", details: error.message}
+	    jsonBody: { error: "Failed to create lease", details: error.message}
 	};
     } else {
-	    context.res = {
+	    return {
 		status: 500,
-		body: { error: "Failed to create lease", details: String(error)}
+		jsonBody: { error: "Failed to create lease", details: String(error)}
 	    }
 	}
     };

@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma";
 import { Lease } from "../domain/lease";
-import { logger } from "@/lib/logger";
+import { logger } from "../../src/lib/logger";
 
 
 export async function createLease(lease: Lease): Promise<string> {
