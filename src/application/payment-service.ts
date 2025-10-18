@@ -1,13 +1,13 @@
 import { v4 as uuid } from "uuid";
-import { Payment } from "../domain/payment";
+import { Payment, PaymentInput } from "../domain/payment";
 import { Lease } from "../domain/lease";
 
-export function parsePayment(leaseId: string, amount: number): Payment {
+export function parsePayment(paymentInput: PaymentInput): Payment {
     return {
 	id: uuid(),
-	leaseId,
+	leaseId: paymentInput.leaseId,
 	paidAt: new Date().toISOString(),
-	amount
+	amount: paymentInput.amount
     }
 };
 

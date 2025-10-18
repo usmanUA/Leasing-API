@@ -7,8 +7,8 @@ export function calculateInstallmentSchedule(input: LeaseInput) : Installment[] 
     const { price, termMonths, nominalRatePct, startDate, monthlyFee } = input;
 
     const monthlyInterestRate = nominalRatePct / 100 / 12;
-    const annuityFactor = (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, input.termMonths)) / 
-    (Math.pow(1 + monthlyInterestRate, input.termMonths) - 1);
+    const annuityFactor = (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, termMonths)) / 
+    (Math.pow(1 + monthlyInterestRate, termMonths) - 1);
 
     const basePayment = price * annuityFactor;
 
@@ -21,21 +21,22 @@ export function calculateInstallmentSchedule(input: LeaseInput) : Installment[] 
 	return d.toISOString().split("T")[0];
     };
 
-    const roundToTwoDecimals = (num: number) => Math.round(num * 100) / 100;
+    const roundToTwoDecimals = (num: number): number => Math.round(num * 100) / 100;
 
-    for (let month = 1; month <= termMonths; month++) {
+    for (let month: number = 1; month <= termMonths; month++) {
 	const interest = roundToTwoDecimals(remainingBalance * monthlyInterestRate);
-	// WARN: If its the last month, there's no interest or monthly fee?
+
 	const principal = month === termMonths
-	? roundToTwoDecimals(remainingBalance)
-	: roundToTwoDecimals(basePayment - interest);
+	    ? roundToTwoDecimals(remainingBalance)
+	    : roundToTwoDecimals(basePayment - interest);
 
 
 	const fee = roundToTwoDecimals(monthlyFee);
 	const payment = roundToTwoDecimals(basePayment + fee);
+
 	const balanceAfter = month === termMonths
-	? 0
-	: roundToTwoDecimals(remainingBalance - principal);
+	    ? 0
+	    : roundToTwoDecimals(remainingBalance - principal);
 
 	installments.push({
 	    period: month,

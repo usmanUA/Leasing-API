@@ -1,7 +1,7 @@
 {
   "name": "leasing-backend",
   "version": "1.0.0",
-  "description": "Leasing Backend API with Azure Functions v3",
+  "description": "Leasing Backend API with Azure Functions v4",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -35,6 +35,6 @@
     "typescript": "^4.9.5"
   },
   "engines": {
-    "node": "14.x"
+    "node": "24.x"
   }
 }

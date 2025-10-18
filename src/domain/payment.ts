@@ -10,6 +10,11 @@ export type Installment = {
     balanceAfter: Money;
 }
 
+export type PaymentInput = {
+    leaseId: string;
+    amount: Money;
+}
+
 export type Payment = {
     id: string;
     leaseId: string;
