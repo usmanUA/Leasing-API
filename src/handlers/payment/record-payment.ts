@@ -3,6 +3,7 @@ import { validateApiKey } from "../../lib/api-key-middleware";
 import { parsePayment } from "../../application/payment-service";
 import { PaymentInputSchema } from "../../lib/validation";
 import { registerPayment } from "../../persistence/payment-repository";
+import { PaymentInput } from "@/domain/payment";
 
 export async function handleRecordPayment(context: Context, req: HttpRequest) {
 
@@ -20,7 +21,8 @@ export async function handleRecordPayment(context: Context, req: HttpRequest) {
 	return;
     }
     try {
-	const payment = parsePayment(validatedPaymentInput.data.leaseId, validatedPaymentInput.data.amount);
+	const paymentInput: PaymentInput = validatedPaymentInput.data
+	const payment = parsePayment(paymentInput);
 	await registerPayment(payment);
 	context.res = { status: 200, body: payment }
     } catch (error) {
