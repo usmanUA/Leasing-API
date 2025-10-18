@@ -27,7 +27,7 @@ jobs:
 
       - name: Create Azure compatible delpyment package
         run: |
-          mkdir -r deployment
+          mkdir deployment
           cp -r dist/functions/* deployment
           cp host.json dist/
           cp package.json dist/
