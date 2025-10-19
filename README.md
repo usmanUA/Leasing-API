@@ -13,7 +13,7 @@ This project showcases a fully functional leasing API with payment processing, i
 
 ## Quickstart
 ### 2. Clone Repository
-```git clone https://github.com/usmanUA/Leasing_API_Module.git```
+```git clone https://github.com/usmanUA/Leasing-API.git```
 
 ### 3. Install Dependencies
 
