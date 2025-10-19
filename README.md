@@ -276,12 +276,9 @@ npm test -- tests/unit/domain/lease.test.ts
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
 | `API_KEY` | API authentication key | Yes | - |
-| `COSMOS_ENDPOINT` | Azure Cosmos DB endpoint | No | - |
-| `COSMOS_KEY` | Azure Cosmos DB key | No | - |
-| `COSMOS_DATABASE_ID` | Database name | No | `leasing-db` |
-| `COSMOS_CONTAINER_ID` | Container name | No | `leases` |
-| `FUNCTIONS_WORKER_RUNTIME` | Runtime type | Yes | `node` |
-| `AzureWebJobsStorage` | Storage connection | Yes | - |
+| `API_BASE_URL` | Base Urls | Yes | - |
+
+
 
 ### TypeScript Configuration
 
@@ -330,16 +327,10 @@ az functionapp config appsettings set \
     COSMOS_KEY="your-cosmos-key"
 ```
 
-### Free Tier Resources
 
-This application can run entirely on **Azure free tier**:
-- Azure Functions: Consumption plan (1M requests/month free)
-- Azure Cosmos DB: Free tier (1000 RU/s, 25GB storage)
-- Application Insights: 5GB data ingestion/month free
+## 🎯 Assignment Requirements
 
-## 🎯 Assignment Requirements Met
-
-✅ **Azure Functions v4** with Node.js 20.x  
+✅ **Azure Functions v3 (v4 is used in the assignment)** with Node.js 14.x  (Node 20.x is used in the assignment)
 ✅ **TypeScript strict mode** with no `any` types  
 ✅ **Clean architecture** following Etufillari folder structure  
 ✅ **Zod validation** for all inputs  
@@ -354,33 +345,9 @@ This application can run entirely on **Azure free tier**:
 
 - **Type Safety**: 100% (strict TypeScript, no `any`)
 - **Test Coverage**: 20 tests across 6 suites
-- **Code Organization**: Clean architecture with 7 distinct layers
+- **Code Organization**: Clean architecture with multiple distinct layers
 - **API Consistency**: RESTful design with standardized error responses
 - **Documentation**: Comprehensive README with examples
-
-## Development Tools
-
-### Recommended VS Code Extensions
-- Azure Functions
-- Prettier - Code formatter
-- ESLint
-- Thunder Client (API testing)
-
-### Useful Commands
-
-```bash
-# Lint code
-npm run lint
-
-# Format code
-npm run format
-
-# Type check
-npm run type-check
-
-# Clean build artifacts
-npm run clean
-```
 
 ## Compatibility
 
