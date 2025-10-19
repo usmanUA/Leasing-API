@@ -33,7 +33,7 @@ Create `local.settings.json` in the project root:
     "API_KEY": "Azure-functions-api-architecture-key",
     "DATABASE_URL": "file:./dev.db"
   }
-}
+}```
 
 ### 3. Install Dependencies
 
