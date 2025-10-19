@@ -5,7 +5,8 @@
 This project showcases a fully functional leasing API with payment processing, installment scheduling, and quote calculation.
 
 ## Prerequisites
-
+NOTE: The subject clearly says node@14 and azure functions v3, however, to make the project compatible with Azure Functions App (which does not support node@14 and func@3)
+I opted for the following settings;
 - **Node.js**: 18.x or higher (tested with Node 20.x)
 - **npm**: 10.x or higher
 - **Azure Functions Core Tools**: 4.x (`npm install -g azure-functions-core-tools@4`)
