@@ -1,51 +1,44 @@
-import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { validateApiKey } from "../../lib/api-key-middleware";
+import { HttpRequest } from "@azure/functions";
 import { parsePayment } from "../../application/payment-service";
 import { PaymentInputSchema } from "../../lib/validation";
 import { registerPayment } from "../../persistence/payment-repository";
 import { PaymentInput } from "../../domain/payment";
 import { logger } from "../../../src/lib/logger";
+import { NotFoundError, ValidationError } from "../../errors/api-errors";
+import { Payment } from "../../domain/payment";
 
-export async function handleRecordPayment(context: InvocationContext, request: HttpRequest): Promise<HttpResponseInit> {
-    const requestId = context.invocationId;
+export async function handleRecordPayment(request: HttpRequest): Promise<Payment> {
 
-    try {
-	if (validateApiKey(request) === false) {
-	    logger.error(`[${requestId}] Unauthorized register payment attempt`)
-	    return {
-		status: 401, 
-		jsonBody: { error: "Unauthorized"}
-	    };
-	}
+    const requestBody = await request.json();
+    const validatedPaymentInput = PaymentInputSchema.safeParse(requestBody);
+    if (validatedPaymentInput.success === false) {
+	const errorDetails = validatedPaymentInput.error.errors.map(err => ({
+	    field: err.path.join('.'),
+	    message: err.message
+	}));
 
-	const validatedPaymentInput = PaymentInputSchema.safeParse(request.body);
-	if (validatedPaymentInput.success === false) {
-	    logger.info(`[${requestId}] Invalid payment data`)
-	    return {
-		status: 400,
-		jsonBody: { error: "Invalid input", details: validatedPaymentInput.error.message }
-	    };
-	}
-	logger.info(`[${requestId}] Registering payment for lease ID: ${validatedPaymentInput.data.leaseId}`);
-	const paymentInput: PaymentInput = validatedPaymentInput.data
-	const payment = parsePayment(paymentInput);
-	await registerPayment(payment);
-	logger.info(`[${requestId}] Payment for lease ID: ${validatedPaymentInput.data.leaseId} succussfully registered`);
-	return {
-	    status: 200,
-	    jsonBody: payment
-	};
-    } catch (error) {
-	if (error instanceof Error) {
-	    return {
-		status: 500,
-		jsonBody: { error: "Failed to register payment", details: error.message }
-	    };
-	} else {
-	    return {
-		status: 500,
-		jsonBody: { error: "Failed to register payment", details: String(error) }
-	    };
-	}
+	logger.error("Create lease response validation failed", {
+	    errorCount: errorDetails.length
+	});
+	throw new ValidationError("Invalid id in get lease request", errorDetails);
     }
+
+    logger.info("Registering lease", {
+	id: validatedPaymentInput.data.leaseId,
+	amount: validatedPaymentInput.data.amount
+    });
+
+    const paymentInput: PaymentInput = validatedPaymentInput.data
+    // NOTE: Any error handling for the following functions?
+    const payment = parsePayment(paymentInput);
+    const registeredPayment = await registerPayment(payment);
+    if (!registeredPayment) {
+	logger.warn("Payment not found", { leaseId: payment.leaseId });
+	throw new NotFoundError("Lease", payment.leaseId);
+    }
+    logger.info("Fetched lease data", {
+	leaseId: registeredPayment.leaseId,
+	amount: registeredPayment.amount
+    });
+    return registeredPayment;
 };

@@ -1,23 +1,52 @@
-import { app, HttpResponseInit } from "@azure/functions";
-import { PrismaClient } from '@prisma/client';
+import { checkDatabaseHealth } from "../../src/lib/health-check";
+import { logger } from "../../src/lib/logger";
+import { handleError } from "../../src/lib/error-handler";
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 
-// NOTE: Why a new prisma here?
-const prisma = new PrismaClient();
+export async function healthCheck(
+    request: HttpRequest,
+    context: InvocationContext,
+): Promise<HttpResponseInit> {
+    const correlationId = request.headers.get('x-correlation-id') || context.invocationId;
 
-export async function healthCheck(): Promise<HttpResponseInit> {
+    const startTime = Date.now();
+
     try {
-        await prisma.$queryRaw`SELECT 1`;
-        
-        return {
-            status: 200,
-            jsonBody: {
-                status: "healthy",
-                database: "connected", 
-                timestamp: new Date().toISOString(),
-                version: "1.0.0"
-            }
-        };
+	logger.info("Checking health", { correlationId });
+	const dbHealth = await checkDatabaseHealth(correlationId);
+	const responseTime = Date.now() - startTime;
+
+	if (dbHealth.status === 'healthy') {
+	    return {
+		status: 200,
+		jsonBody: {
+		    status: "healthy",
+		    timestamp: new Date().toISOString(),
+		    checks: {
+			database: 'connected',
+			responseTime: `${responseTime}ms`
+		    },
+		    version: process.env.APP_VERSION || "1.0.0"
+		}
+	    };
+	}
+	return {
+	    status: 503,
+	    jsonBody: {
+		status: "unhealthy",
+		timestamp: new Date().toISOString(),
+		checks: {
+		    database: dbHealth.status,
+		    error: dbHealth.error,
+		    responseTime: `${responseTime}ms`
+		}
+	    }
+	};
     } catch (error) {
+	if (error instanceof Error) {
+	    handleError(error, correlationId);
+	}
+
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         
         return {

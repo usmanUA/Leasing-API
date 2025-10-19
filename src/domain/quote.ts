@@ -10,9 +10,16 @@ export type QuoteInput = {
 };
 
 export type Quote = {
-    monthlyPayment: number;
+    monthlyPayment: Money;
     totalPayments: Money;
-    totalInterest: number;
+    totalInterest: Money;
+    totalFee: Money;
     schedule: Installment[];
-    totalFee: number;
+}
+
+export class QuoteCalculationError extends Error {
+    constructor(message: string) {
+	super(message);
+	this.name = 'QuoteCalculationError';
+    }
 }

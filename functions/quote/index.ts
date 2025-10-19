@@ -1,27 +1,67 @@
 import { handleCalculateQuote } from "../../src/handlers/quote/calculate-quote";
-import { app, HttpRequest, HttpResponseInit } from "@azure/functions";
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { logger } from "../../src/lib/logger";
+import { handleError } from "../../src/lib/error-handler";
+import { withAuth } from "../../src/lib/api-key-middleware";
 
-// TODO: use context logs? logger?
-export async function getQuote(request: HttpRequest): Promise<HttpResponseInit> {
+export async function getQuote(
+    request: HttpRequest,
+    context: InvocationContext
+): Promise<HttpResponseInit> {
+    const correlationId = request.headers.get('x-correlation-id') || context.invocationId;
+
     try {
+	logger.info('Processing quote request', { correlationId });
 	if (request.method === "GET") {
 	    const quote = await handleCalculateQuote(request);
 	    return {
 		status: 200,
-		jsonBody: quote,
-		};
+		jsonBody: {
+		  monthlyPayment: quote.monthlyPayment,
+		  totalPayments: quote.totalPayments,
+		  totalInterest: quote.totalInterest,
+		  totalFee: quote.totalFee,
+		  schedule: quote.schedule
+		},
+		headers: {
+		    'Context-Type': 'application/json',
+		    'X-Correlation-Id': correlationId
+		}
+	    };
 	} else {
+	    // WARNING: Should I check for this in else statement?
 	    return {
 		status: 405,
-		jsonBody: { error: "This method is not allowed."}
-		};
+		jsonBody: {
+		    error: {
+			code: 'METHOD_NOT_ALLOWED',
+			message: "This method is not allowed."
+			}
+		    },
+		headers: {
+		    'Context-Type': 'application/json',
+		    'X-Correlation-Id': correlationId
+		}
+	    };
 	}
     } catch (error) {
-	logger.error("Error getting quote")
+	if (error instanceof Error) {
+	    return handleError(error, correlationId);
+	}
+
+	logger.error("Error getting quote", { correlationId });
+
 	return {
 	    status: 500,
-	    jsonBody: { error: "Internal Server Error"}
+	    jsonBody: {
+		error: {
+		    code: 'INTERNAL_ERROR',
+		    message: 'An unexpected error occured'
+		}
+	    },
+	    headers: {
+		'X-Correlation-Id': correlationId
+	    }
 	};
     }
 }
@@ -30,5 +70,5 @@ app.http("calculateQuote", {
     route: "quote",
     methods: ["GET"],
     authLevel: "anonymous",
-    handler: getQuote
+    handler: withAuth(getQuote)
 });

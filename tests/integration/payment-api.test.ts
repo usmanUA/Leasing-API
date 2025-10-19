@@ -28,40 +28,35 @@ describe('Payment API Integration Tests', () => {
     });
 
     test('POST /api/payments registers a payment', async() => {
-	try {
-	    const response = await axios.post(
-		`${API_BASE_URL}/payments`,
-		{
-		    leaseId: createdLeaseId,
-		    amount: 100,
-		},
-		{ headers: { 'x-api-key': API_KEY } }
-	    );
-	    expect(response.status).toBe(200);
-	    expect(response.data).toHaveProperty('id');
-	    expect(response.data.amount).toBe(100);
-	    expect(response.data.leaseId).toBe(createdLeaseId);
-	} catch (error) {
-	    if (error instanceof Error) {
-		console.error('Test failed with error: ', error)
-	    }
-	}
+	const response = await axios.post(
+	    `${API_BASE_URL}/payments`,
+	    {
+		leaseId: createdLeaseId,
+		amount: 100,
+	    },
+	    { headers: { 'x-api-key': API_KEY } }
+	);
+	expect(response.status).toBe(200);
+	expect(response.data).toHaveProperty('id');
+	expect(response.data.amount).toBe(100);
+	expect(response.data.leaseId).toBe(createdLeaseId);
     });
 
     test('POST /api/leases/{id} updates remaining balance', async () => {
-	try {
-	    const response = await axios.get(
-		`${API_BASE_URL}/leases/${createdLeaseId}`,
-		{
-		headers: { 'x-api-key': API_KEY }
-		}
-	    );
-	    expect(response.data.remainingBalance).toBeLessThan(response.data.totals.totalPayments);
-	} catch (error) {
-	    if (error instanceof Error) {
-		console.error('Test failed with error: ', error)
+	const response = await axios.get(
+	    `${API_BASE_URL}/leases/${createdLeaseId}`,
+	    {
+	    headers: { 'x-api-key': API_KEY }
 	    }
-	}
-
+	);
+	expect(response.data.remainingBalance).toBeLessThan(response.data.totals.totalPayments);
     });
+
+    test("POST /api/payments returns 400 for invalid leaseId", async() => {
+	await expect(axios.post(
+	    `${API_BASE_URL}/payments`,
+	    { leaseId: 'incorrect', amount: 75 },
+	    { headers: { 'x-api-key': API_KEY }}
+	)).rejects.toMatchObject({ response: { status: 400 } });
+    })
 });

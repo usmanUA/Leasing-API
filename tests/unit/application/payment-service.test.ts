@@ -1,5 +1,5 @@
 import { parseLease } from "../../../src/application/lease-service";
-import { calculateRemainigBalance } from "../../../src/application/payment-service";
+import { calculateRemainigBalance, PaymentCalculationError } from "../../../src/application/payment-service";
 import { Payment } from "../../../src/domain/payment"
 import { LeaseInput } from "../../../src/domain/lease"
 
@@ -27,10 +27,10 @@ describe('Payment Service', () => {
 
 	const remainingDue = totalDue - (70.35 * 2);
 	const remainingBalance = calculateRemainigBalance(mockLease, mockPayments)
-	expect(remainingBalance).toBe(remainingDue);
+	expect(remainingBalance).toBeCloseTo(remainingDue);
     });
 
-    test('remaining balance is never negative', () => {})
+    test('remaining balance is never negative', () => {
 	const totalDue = mockLease.totals.totalPayments;
 	const paymentAmount = totalDue / 2;
         const mockPayments: Payment[] = [
@@ -40,4 +40,28 @@ describe('Payment Service', () => {
 
 	const  remainingBalance = calculateRemainigBalance(mockLease, mockPayments);
 	expect(remainingBalance).toBeCloseTo(0, 2);
+    });
+
+    test('throws PaymentCalculationError upon overpayment', () => {
+	const totalDue = mockLease.totals.totalPayments;
+
+	const mockPayments: Payment[] = [
+        { id: 'payment1', leaseId: 'lease786', paidAt: '2025-10-15', amount: totalDue + 5 } ];
+
+	expect(() => calculateRemainigBalance(mockLease, mockPayments)).toThrow(PaymentCalculationError);
+    });
+
+    test("returns full amount with no payment yet", () => {
+	const mockPayment: Payment[] = [];
+	const remainingBalance = calculateRemainigBalance(mockLease, mockPayment);
+	expect(remainingBalance).toBeCloseTo(mockLease.totals.totalPayments, 2);
+    });
+
+    test("return 0 with total payment is done", () => {
+	const totalDue = mockLease.totals.totalPayments;
+	const mockPayment: Payment[] = [
+	    { id: 'payment1', leaseId: 'lease786', paidAt: '2025-10-15', amount: totalDue }];
+	const remainingBalance = calculateRemainigBalance(mockLease, mockPayment);
+	expect(remainingBalance).toBeCloseTo(0);
+    })
 });

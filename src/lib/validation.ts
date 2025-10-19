@@ -1,3 +1,4 @@
+import { Money } from '../domain/lease';
 import { z } from 'zod';
 
 export const LeaseInputSchema = z.object({
@@ -39,3 +40,8 @@ export const QuoteInputSchema = z.object({
     monthlyFee: z.number()
 		    .min(0, "Monthly fee can not be negatve")
 })
+
+
+export function roundToCents(amount: Money): Money {
+    return Math.round(amount * 100) / 100;
+} 

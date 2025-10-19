@@ -20,3 +20,14 @@ export type Lease = LeaseInput & {
     schedule: Installment[];
     totals: { totalPayments: Money; totalInterest: Money; totalFees: Money};
 };
+
+export type LeaseReponse = Lease & {
+    remainingBalance: Money;
+};
+
+export class LeaseCalculationError extends Error {
+    constructor(message: string) {
+	super(message);
+	this.name = "LeaseCalculationError";
+    }
+}
