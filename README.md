@@ -6,20 +6,22 @@ This project showcases a fully functional leasing API with payment processing, i
 
 ## Prerequisites
 
-- **Node.js**: 20.11.0 or higher (tested with Node 20.x)
-- **npm**: 10.0.0 or higher
+- **Node.js**: 18.x or higher (tested with Node 20.x)
+- **npm**: 10.x or higher
 - **Azure Functions Core Tools**: 4.x (`npm install -g azure-functions-core-tools@4`)
-- **TypeScript**: 5.x (included in dependencies)
+- **TypeScript**: 4.x (included in dependencies)
 
 ## Quickstart
+### 2. Clone Repositor
+```git clone https://github.com/usmanUA/Leasing_API_Module.git```
 
-### 1. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Configure Local Settings
+### 3. Configure Local Settings
 
 Create `local.settings.json` in the project root:
 
@@ -37,8 +39,15 @@ Create `local.settings.json` in the project root:
   }
 }
 ```
+### 4. Start Local Development Server
 
-### 3. Run Tests
+```bash
+npm start
+```
+
+The API will be available at `http://localhost:7071`
+
+### 5. Run Tests
 
 ```bash
 # Run all tests
@@ -51,15 +60,9 @@ npm run test:coverage
 npm run test:watch
 ```
 
-### 4. Start Local Development Server
 
-```bash
-npm start
-```
 
-The API will be available at `http://localhost:7071`
-
-### 5. Test Health Check
+### 6. Test Health Check
 
 ```bash
 curl http://localhost:7071/api/health
