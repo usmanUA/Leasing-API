@@ -12,16 +12,16 @@ This project showcases a fully functional leasing API with payment processing, i
 - **TypeScript**: 4.x (included in dependencies)
 
 ## Quickstart
-### 2. Clone Repositor
+### 2. Clone Repository
 ```git clone https://github.com/usmanUA/Leasing_API_Module.git```
 
-### 2. Install Dependencies
+### 3. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Configure Local Settings
+### 4. Configure Local Settings
 
 Create `local.settings.json` in the project root:
 
@@ -31,15 +31,14 @@ Create `local.settings.json` in the project root:
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "API_KEY": "local-dev-key-12345",
-    "COSMOS_ENDPOINT": "",
-    "COSMOS_KEY": "",
-    "COSMOS_DATABASE_ID": "leasing-db",
-    "COSMOS_CONTAINER_ID": "leases"
+    "AzureWebJobsStorage": "",
+    "API_BASE_URL": "http://localhost:7071/api",
+    "API_KEY": "Azure-functions-api-architecture-key",
+    "DATABASE_URL": "file:./dev.db"
   }
 }
 ```
-### 4. Start Local Development Server
+### 5. Start Local Development Server
 
 ```bash
 npm start
@@ -47,7 +46,7 @@ npm start
 
 The API will be available at `http://localhost:7071`
 
-### 5. Run Tests
+### 6. Run Tests
 
 ```bash
 # Run all tests
@@ -62,10 +61,10 @@ npm run test:watch
 
 
 
-### 6. Test Health Check
+### 7. Test Health Check
 
 ```bash
-curl http://localhost:7071/api/health
+curl http://localhost:7071/api/health-check
 ```
 
 ## API Endpoints
@@ -380,6 +379,4 @@ az functionapp config appsettings set \
 This project is created as a technical assignment for Etufillari.
 
 ---
-
-**Built with ❤️ using TypeScript, Azure Functions, and Clean Architecture principles**
 
