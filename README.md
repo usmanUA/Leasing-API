@@ -40,7 +40,6 @@ Create `local.settings.json` in the project root:
 ```bash
 npm install
 ```
-```
 
 ### 4. Configure Database for Prisma
 ```
