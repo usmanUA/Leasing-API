@@ -12,16 +12,13 @@ This project showcases a fully functional leasing API with payment processing, i
 - **TypeScript**: 4.x (included in dependencies)
 
 ## Quickstart
-### 2. Clone Repository
-```git clone https://github.com/usmanUA/Leasing-API.git```
-
-### 3. Install Dependencies
-
-```bash
-npm install
+### 1. Clone Repository
+```
+git clone https://github.com/usmanUA/Leasing-API.git
+cd Leasing-API
 ```
 
-### 4. Configure Local Settings
+### 2. Configure Local Settings
 
 Create `local.settings.json` in the project root:
 
@@ -37,7 +34,20 @@ Create `local.settings.json` in the project root:
     "DATABASE_URL": "file:./dev.db"
   }
 }
+
+### 3. Install Dependencies
+
+```bash
+npm install
 ```
+```
+
+### 4. Configure Database for Prisma
+```
+npm run prisma:generate
+npx prisma db push
+```
+
 ### 5. Start Local Development Server
 
 ```bash
