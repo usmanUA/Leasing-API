@@ -1,3 +1,5 @@
+// src/domain/lease.ts
+
 import { Installment } from "./payment";
 
 export type Money = number;

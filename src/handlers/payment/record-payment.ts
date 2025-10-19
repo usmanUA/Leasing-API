@@ -1,3 +1,5 @@
+// src/handlers/payment/record-payment.ts
+
 import { HttpRequest } from "@azure/functions";
 import { parsePayment } from "../../application/payment-service";
 import { PaymentInputSchema } from "../../lib/validation";
@@ -7,6 +9,8 @@ import { logger } from "../../../src/lib/logger";
 import { NotFoundError, ValidationError } from "../../errors/api-errors";
 import { Payment } from "../../domain/payment";
 
+// NOTE: handle register payment path, errors are thrown heere and caught by the azure
+// NOTE: function to be handler by handlerError wrapper
 export async function handleRecordPayment(request: HttpRequest): Promise<Payment> {
 
     const requestBody = await request.json();
@@ -29,7 +33,7 @@ export async function handleRecordPayment(request: HttpRequest): Promise<Payment
     });
 
     const paymentInput: PaymentInput = validatedPaymentInput.data
-    // NOTE: Any error handling for the following functions?
+    // NOTE: any error handling for the following functions?
     const payment = parsePayment(paymentInput);
     const registeredPayment = await registerPayment(payment);
     if (!registeredPayment) {

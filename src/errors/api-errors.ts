@@ -5,6 +5,7 @@ export type ValidationErrorDetails = {
     message: string;
 };
 
+// NOTE: base class for API related errors
 export class APIError extends Error {
     public readonly statusCode: number;
     public readonly code: string;
@@ -24,6 +25,7 @@ export class APIError extends Error {
     }
 }
 
+// NOTE: API related errors
 export class ValidationError extends APIError {
     constructor(message: string, details: ValidationErrorDetails[]) {
 	super(400, 'VALIDATION_ERROR', message, details);

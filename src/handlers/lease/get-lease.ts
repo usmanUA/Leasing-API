@@ -1,3 +1,5 @@
+// src/handlers/lease/get-lease.ts
+
 import { getLeaseById } from "../../persistence/lease-repository";
 import { HttpRequest } from "@azure/functions";
 import { LeaseIdSchema } from "../../lib/validation";
@@ -7,6 +9,8 @@ import { logger } from "../../../src/lib/logger";
 import { LeaseReponse } from "../../domain/lease";
 import { NotFoundError, ValidationError } from "../../errors/api-errors";
 
+// NOTE: handle get lease path, errors are thrown heere and caught by the azure
+// NOTE: function to be handler by handlerError wrapper
 export async function handleGetLease(request: HttpRequest): Promise<LeaseReponse> {
 
     const validatedLeaseId = LeaseIdSchema.safeParse(request.params.id);
@@ -27,7 +31,6 @@ export async function handleGetLease(request: HttpRequest): Promise<LeaseReponse
 	id: leaseId
     });
 
-    // NOTE: Any error handling for the following functions?
     const lease = await getLeaseById(validatedLeaseId.data);
 
     if (!lease) {

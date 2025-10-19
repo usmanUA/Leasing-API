@@ -1,3 +1,5 @@
+// src/lib/api-key-middleware.ts
+
 import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { logger } from "./logger";
 

@@ -1,3 +1,5 @@
+// src/handlers/lease/create-lease.ts
+
 import { LeaseInputSchema } from "../../lib/validation";
 import { createLease } from "../../persistence/lease-repository";
 import { HttpRequest, InvocationContext } from "@azure/functions";
@@ -6,6 +8,8 @@ import { LeaseInput, Lease } from "../../domain/lease";
 import { logger } from "../../../src/lib/logger";
 import { NotFoundError, ValidationError } from "../../errors/api-errors";
 
+// NOTE: handle create lease path, errors are thrown heere and caught by the azure
+// NOTE: function to be handler by handlerError wrapper
 export async function handleCreateLease(context: InvocationContext, request: HttpRequest): Promise<Lease> {
     const requestId = context.invocationId;
 

@@ -1,4 +1,4 @@
-// src/lib/logger.tslogg
+// src/lib/logger.ts
 type LogValue = string | number | boolean | LogValue[] | { [key: string]: LogValue } | null | undefined;
 
 type LogContext = {

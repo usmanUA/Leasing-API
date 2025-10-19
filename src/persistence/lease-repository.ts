@@ -1,3 +1,5 @@
+// src/persistence/lease-repository.ts
+
 import prisma from "../lib/prisma";
 import { Lease } from "../domain/lease";
 import { logger } from "../../src/lib/logger";

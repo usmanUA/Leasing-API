@@ -1,3 +1,5 @@
+// src/lib/logger.ts
+
 import { PrismaClient } from '@prisma/client';
 
 declare global {

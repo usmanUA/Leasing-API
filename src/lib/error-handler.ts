@@ -15,7 +15,9 @@ type ErrorResponse = {
     };
 };
 
+// NOTE: wrapper for handling all type of errors.
 export function handleError(error: Error, correlationId: string): HttpResponseInit {
+    // NOTE: detect every type of error to be handled accordingly
     if (isAPIError(error)) {
 	logger.error(`API Error: ${error.code}`, {
 	    correlationId,

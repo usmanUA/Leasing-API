@@ -1,4 +1,4 @@
-// test/unit/domain/lease.test.ts
+// tests/unit/domain/lease.test.ts
 
 import { calculateInstallmentSchedule } from "../../../src/application/lease-service";
 describe('Lease Domain', () => {

@@ -1,3 +1,5 @@
+// src/domain/quote.ts
+
 import { Money } from "./lease";
 import { Installment } from "./payment";
 
