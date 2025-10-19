@@ -46,4 +46,7 @@ __pycache__/
 __blobstorage__
 __queuestorage__
 __azurite_db*__.json
-/generated/prisma
+prisma/*.db
+prisma/*.db-journal
+*.db
+*.db-journal
