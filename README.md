@@ -1,8 +1,8 @@
 # Leasing Backend API
 
-**Assignment for Etufillari** - A production-ready leasing management system demonstrating enterprise-grade TypeScript backend architecture with Azure Functions, comprehensive testing, and clean domain-driven design.
+**Assignment for Etufillari** - A leasing management backend system demonstrating enterprise-grade TypeScript backend architecture with Azure Functions, comprehensive testing, and clean domain-driven design.
 
-This project showcases a fully functional leasing API with payment processing, installment scheduling, and quote calculation, following Etufillari's backend structure and architectural conventions.
+This project showcases a fully functional leasing API with payment processing, installment scheduling, and quote calculation.
 
 ## Prerequisites
 
