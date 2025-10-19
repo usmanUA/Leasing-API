@@ -368,7 +368,7 @@ az functionapp config appsettings set \
 - npm: 10.2.4
 
 **Supported Versions:**
-- Node.js: 20.x (LTS)
+- Node.js: >=18.x (LTS)
 - Azure Functions: v4
 - npm: 10.x or higher
 
