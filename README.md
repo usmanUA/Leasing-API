@@ -28,12 +28,12 @@ Create `local.settings.json` in the project root:
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "AzureWebJobsStorage": "",
     "API_BASE_URL": "http://localhost:7071/api",
     "API_KEY": "Azure-functions-api-architecture-key",
     "DATABASE_URL": "file:./dev.db"
   }
-}```
+}
+```
 
 ### 3. Install Dependencies
 
