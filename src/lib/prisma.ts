@@ -6,8 +6,11 @@ declare global {
     var prisma: PrismaClient | undefined;
 }
 
+const url = process.env.DATABASE_URL || "file:./deb.db";
+
 const createPrismaClient = (): PrismaClient => {
     return new PrismaClient({
+	datasources: { db: { url }},
 	log: [ 'error' ]
     });
 };
