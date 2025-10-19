@@ -1,71 +1,27 @@
 # Leasing Backend API
 
-**Assignment for Etufillari** - A production-ready leasing management system demonstrating enterprise-grade TypeScript backend architecture with Azure Functions, comprehensive testing, and clean domain-driven design.
+**Assignment for Etufillari** - A leasing management backend system demonstrating enterprise-grade TypeScript backend architecture with Azure Functions, comprehensive testing, and clean domain-driven design.
 
-This project showcases a fully functional leasing API with payment processing, installment scheduling, and quote calculation, following Etufillari's backend structure and architectural conventions.
+This project showcases a fully functional leasing API with payment processing, installment scheduling, and quote calculation.
 
 ## Prerequisites
 
-- **Node.js**: 20.11.0 or higher (tested with Node 20.x)
-- **npm**: 10.0.0 or higher
+- **Node.js**: 18.x or higher (tested with Node 20.x)
+- **npm**: 10.x or higher
 - **Azure Functions Core Tools**: 4.x (`npm install -g azure-functions-core-tools@4`)
-- **TypeScript**: 5.x (included in dependencies)
-
-## System Architecture
-
-This project implements a **clean architecture** pattern with clear separation of concerns across domain, application, and infrastructure layers. The system follows **SOLID principles** and uses **domain-driven design** for leasing calculations and payment processing.
-
-### Repository Structure
-
-```
-/functions
-  /leases           # Lease management endpoints
-  /payments         # Payment recording endpoints
-  /quote            # Quote calculation endpoint
-  /health-check     # Health monitoring endpoint
-/src
-  /application      # Business logic & orchestration
-  /domain           # Core domain models & calculations
-  /handlers         # Request handlers & response formatting
-  /lib              # Shared utilities (validation, auth, logging)
-  /persistence      # Data access layer (repositories)
-  /errors           # Custom error types
-/tests
-  /unit             # Domain & service layer tests
-  /integration      # API endpoint tests
-```
-
-## Key Features
-
-### 🎯 Core Functionality
-- **Lease Management**: Create and retrieve leasing contracts with amortization schedules
-- **Payment Processing**: Record payments and track remaining balances
-- **Quote Calculation**: Generate instant leasing quotes without persistence
-- **Health Monitoring**: Real-time system health checks
-
-### 🧪 Testing Strategy
-- **Domain Layer Testing**: Pure calculation logic with edge case coverage
-- **Service Layer Testing**: Business logic validation and error handling
-- **Integration Testing**: End-to-end API behavior verification
-- **Validation Testing**: Comprehensive Zod schema validation
-
-### 🔧 Technical Architecture
-- **Clean Architecture**: Domain-driven design with dependency inversion
-- **Type Safety**: TypeScript strict mode with precise typing (no `any`)
-- **Input Validation**: Zod schemas with detailed error messages
-- **Error Handling**: Centralized error handling with correlation IDs
-- **Authentication**: API key middleware for secure endpoints
-- **Logging**: Structured logging with context propagation
+- **TypeScript**: 4.x (included in dependencies)
 
 ## Quickstart
+### 2. Clone Repositor
+```git clone https://github.com/usmanUA/Leasing_API_Module.git```
 
-### 1. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Configure Local Settings
+### 3. Configure Local Settings
 
 Create `local.settings.json` in the project root:
 
@@ -83,8 +39,15 @@ Create `local.settings.json` in the project root:
   }
 }
 ```
+### 4. Start Local Development Server
 
-### 3. Run Tests
+```bash
+npm start
+```
+
+The API will be available at `http://localhost:7071`
+
+### 5. Run Tests
 
 ```bash
 # Run all tests
@@ -97,15 +60,9 @@ npm run test:coverage
 npm run test:watch
 ```
 
-### 4. Start Local Development Server
 
-```bash
-npm start
-```
 
-The API will be available at `http://localhost:7071`
-
-### 5. Test Health Check
+### 6. Test Health Check
 
 ```bash
 curl http://localhost:7071/api/health
@@ -322,12 +279,9 @@ npm test -- tests/unit/domain/lease.test.ts
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
 | `API_KEY` | API authentication key | Yes | - |
-| `COSMOS_ENDPOINT` | Azure Cosmos DB endpoint | No | - |
-| `COSMOS_KEY` | Azure Cosmos DB key | No | - |
-| `COSMOS_DATABASE_ID` | Database name | No | `leasing-db` |
-| `COSMOS_CONTAINER_ID` | Container name | No | `leases` |
-| `FUNCTIONS_WORKER_RUNTIME` | Runtime type | Yes | `node` |
-| `AzureWebJobsStorage` | Storage connection | Yes | - |
+| `API_BASE_URL` | Base Urls | Yes | - |
+
+
 
 ### TypeScript Configuration
 
@@ -376,16 +330,10 @@ az functionapp config appsettings set \
     COSMOS_KEY="your-cosmos-key"
 ```
 
-### Free Tier Resources
 
-This application can run entirely on **Azure free tier**:
-- Azure Functions: Consumption plan (1M requests/month free)
-- Azure Cosmos DB: Free tier (1000 RU/s, 25GB storage)
-- Application Insights: 5GB data ingestion/month free
+## 🎯 Assignment Requirements
 
-## 🎯 Assignment Requirements Met
-
-✅ **Azure Functions v4** with Node.js 20.x  
+✅ **Azure Functions v3 (v4 is used in the assignment)** with Node.js 14.x  (Node 20.x is used in the assignment)
 ✅ **TypeScript strict mode** with no `any` types  
 ✅ **Clean architecture** following Etufillari folder structure  
 ✅ **Zod validation** for all inputs  
@@ -400,33 +348,9 @@ This application can run entirely on **Azure free tier**:
 
 - **Type Safety**: 100% (strict TypeScript, no `any`)
 - **Test Coverage**: 20 tests across 6 suites
-- **Code Organization**: Clean architecture with 7 distinct layers
+- **Code Organization**: Clean architecture with multiple distinct layers
 - **API Consistency**: RESTful design with standardized error responses
 - **Documentation**: Comprehensive README with examples
-
-## Development Tools
-
-### Recommended VS Code Extensions
-- Azure Functions
-- Prettier - Code formatter
-- ESLint
-- Thunder Client (API testing)
-
-### Useful Commands
-
-```bash
-# Lint code
-npm run lint
-
-# Format code
-npm run format
-
-# Type check
-npm run type-check
-
-# Clean build artifacts
-npm run clean
-```
 
 ## Compatibility
 
@@ -458,3 +382,4 @@ This project is created as a technical assignment for Etufillari.
 ---
 
 **Built with ❤️ using TypeScript, Azure Functions, and Clean Architecture principles**
+
