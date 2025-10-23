@@ -57,11 +57,6 @@ jobs:
           fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
           "
 
-      - name: Install production dependencies
-        run: |
-          cd deployment
-          npm ci --omit=dev
-
       - name: Login to Azure
         uses: azure/login@v1
         with:
