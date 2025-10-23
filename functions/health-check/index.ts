@@ -1,13 +1,19 @@
-import '../../src/create-paths';
-import { checkDatabaseHealth } from "@/lib/health-check";
-import { logger } from "@/lib/logger";
-import { handleError } from "@/lib/error-handler";
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 
-export async function healthCheck(
+import '../../src/create-paths';
+
+app.http("healthCheck", {
+    route: "health-check",
+    methods: ["GET"],
+    authLevel: "anonymous",
+    handler: async function (
     request: HttpRequest,
     context: InvocationContext,
 ): Promise<HttpResponseInit> {
+
+    const { checkDatabaseHealth } = await import("@/lib/health-check");
+    const { logger } = await import("@/lib/logger");
+    const { handleError } = await import("@/lib/error-handler");
     const correlationId = request.headers.get('x-correlation-id') || context.invocationId;
 
     const startTime = Date.now();
@@ -61,11 +67,5 @@ export async function healthCheck(
             }
         };
     }
-};
-
-app.http("healthCheck", {
-    route: "health-check",
-    methods: ["GET"],
-    authLevel: "anonymous",
-    handler: healthCheck
-})
+    }
+});
