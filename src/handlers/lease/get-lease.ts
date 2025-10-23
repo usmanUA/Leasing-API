@@ -40,13 +40,12 @@ export async function handleGetLease(request: HttpRequest): Promise<LeaseReponse
     const payments = await getPaymentsByLeaseId(validatedLeaseId.data);
 
     if (!payments) {
-	logger.warn("Payment not found", { leaseId });
-	throw new NotFoundError("Lease", leaseId)
+	logger.warn("Payment not found for this lease", { leaseId });
     }
 
     logger.info("Fetched lease data", {
 	leaseId,
-	paymentCount: payments.length
+	paymentCount: payments?.length
     });
 
     const remainingBalance = calculateRemainigBalance(lease, payments);

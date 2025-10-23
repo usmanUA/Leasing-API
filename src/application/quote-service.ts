@@ -1,9 +1,9 @@
 // src/application/quote-service.ts
 
 import { calculateInstallmentSchedule } from "./lease-service";
-import { QuoteInput, Quote, QuoteCalculationError } from "../domain/quote";
-import { Installment } from "../domain/payment";
-import { Money } from "../domain/lease";
+import { QuoteInput, Quote, QuoteCalculationError } from "@/domain/quote";
+import { Installment } from "@/domain/payment";
+import { Money } from "@/domain/lease";
 
 
 export function calculateQuote(input: QuoteInput): Quote {

@@ -1,8 +1,8 @@
 // src/lib/error-handler.ts
 
-import { LeaseCalculationError } from "../domain/lease";
-import { QuoteCalculationError } from "../domain/quote";
-import { isAPIError, ValidationErrorDetails } from "../errors/api-errors"
+import { LeaseCalculationError } from "@/domain/lease";
+import { QuoteCalculationError } from "@/domain/quote";
+import { isAPIError, ValidationErrorDetails } from "@/errors/api-errors"
 import { HttpResponseInit } from "@azure/functions";
 import { LeaseRepositoryError, PaymentCalculationError, PaymentRepositoryError } from "..";
 import { logger } from "./logger";

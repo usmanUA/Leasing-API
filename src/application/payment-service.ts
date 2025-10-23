@@ -16,7 +16,11 @@ export function parsePayment(paymentInput: PaymentInput): Payment {
     }
 };
 
-export function calculateRemainigBalance(lease: Lease, payments: Payment[]) : Money {
+export function calculateRemainigBalance(lease: Lease, payments: Payment[] | null) : Money {
+    // NOTE: if no payment to a lease yet
+    if (!payments) {
+	return lease.totals.totalPayments;
+    }
     // NOTE: already paid
     const totalPaid = payments.reduce((sum, payment) => sum + payment.amount, 0);
 

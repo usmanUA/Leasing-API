@@ -34,7 +34,7 @@ export async function handleCreateLease(context: InvocationContext, request: Htt
     const lease: Lease = parseLease(leaseInput);
     const leaseResponse = await createLease(lease);
     if (!leaseResponse) {
-	logger.warn("Lease not found in the database", { leaseId: lease.id });
+	logger.warn("Lease creation failed in the database", { leaseId: lease.id });
 	throw new NotFoundError("Lease", lease.id)
     }
 

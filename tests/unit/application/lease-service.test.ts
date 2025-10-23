@@ -1,6 +1,6 @@
-import { LeaseInputSchema } from "@/src";
-import { calculateInstallmentSchedule } from "@/application/lease-service";
-import { LeaseInput } from "@/domain/lease";
+import { LeaseInputSchema } from "../../../src";
+import { calculateInstallmentSchedule } from "../../../src/application/lease-service";
+import { LeaseInput } from "../../../src/domain/lease";
 
 
 describe("Lease Service", () => {

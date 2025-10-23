@@ -1,4 +1,10 @@
 import axios from 'axios';
+import http from "http";
+import https from "https";
+
+// NOTE: Force axios to close TCP after each request
+axios.defaults.httpAgent = new http.Agent({ keepAlive: false });
+axios.defaults.httpsAgent = new https.Agent({ keepAlive: false });
 
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:7071/api';
 const API_KEY = process.env.API_KEY || 'Azure-functions-api-architecture-key'

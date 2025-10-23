@@ -1,6 +1,6 @@
 // src/lib/validation
 
-import { Money } from '../domain/lease';
+import { Money } from '@/domain/lease';
 import { z } from 'zod';
 
 export const LeaseInputSchema = z.object({

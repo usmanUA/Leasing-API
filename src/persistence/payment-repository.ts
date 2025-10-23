@@ -63,7 +63,7 @@ export async function getPaymentsByLeaseId(leaseId: string): Promise<Payment[] |
 	});
 
 	if (!dbPayments || dbPayments.length === 0) {
-	    logger.info("Lease not found in the database", { leaseId: leaseId });
+	    logger.info("Payment not found in the database", { leaseId: leaseId });
 	    return null;
 	}
 

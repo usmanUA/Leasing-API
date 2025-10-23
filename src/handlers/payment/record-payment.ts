@@ -21,13 +21,13 @@ export async function handleRecordPayment(request: HttpRequest): Promise<Payment
 	    message: err.message
 	}));
 
-	logger.error("Create lease response validation failed", {
+	logger.error("Register payment request validation failed", {
 	    errorCount: errorDetails.length
 	});
 	throw new ValidationError("Invalid id in get lease request", errorDetails);
     }
 
-    logger.info("Registering lease", {
+    logger.info("Registering payment", {
 	id: validatedPaymentInput.data.leaseId,
 	amount: validatedPaymentInput.data.amount
     });
@@ -37,10 +37,10 @@ export async function handleRecordPayment(request: HttpRequest): Promise<Payment
     const payment = parsePayment(paymentInput);
     const registeredPayment = await registerPayment(payment);
     if (!registeredPayment) {
-	logger.warn("Payment not found", { leaseId: payment.leaseId });
+	logger.warn("Payment not registered in the database", { leaseId: payment.leaseId });
 	throw new NotFoundError("Lease", payment.leaseId);
     }
-    logger.info("Fetched lease data", {
+    logger.info("Registered payment", {
 	leaseId: registeredPayment.leaseId,
 	amount: registeredPayment.amount
     });
