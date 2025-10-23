@@ -31,7 +31,9 @@ jobs:
       - name: Create Azure compatible delpyment package
         run: |
           mkdir deployment
-          cp -r dist/* deployment
+          cp -r dist/functions/* deployment
+          cp -r dist/src deployment
+          cp -r dist/prisma deployment
           cp -r node_modules deployment
           cp host.json deployment
           cp package.json deployment
