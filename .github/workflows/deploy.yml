@@ -28,6 +28,10 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
+      - name: Fix required paths in compiled functions
+        run: |
+          find dist/functions -name "*.js" -type f -exec perl -i -pe 's|require\("\.\./\.\./src/|require\("../src/|g' {} \;
+
       - name: Create Azure compatible delpyment package
         run: |
           mkdir deployment
