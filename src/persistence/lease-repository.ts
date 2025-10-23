@@ -1,8 +1,8 @@
 // src/persistence/lease-repository.ts
 
-import prisma from "@/lib/prisma";
-import { Lease } from "@/domain/lease";
-import { logger } from "@/lib/logger";
+import prisma from "../lib/prisma";
+import { Lease } from "../domain/lease";
+import { logger } from "../lib/logger";
 
 export class LeaseRepositoryError extends Error {
     constructor(message: string, public readonly cause?: Error) {

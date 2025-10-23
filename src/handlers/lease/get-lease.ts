@@ -1,13 +1,13 @@
 // src/handlers/lease/get-lease.ts
 
-import { getLeaseById } from "@/persistence/lease-repository";
+import { getLeaseById } from "../../../src/persistence/lease-repository";
 import { HttpRequest } from "@azure/functions";
-import { LeaseIdSchema } from "@/lib/validation";
-import { getPaymentsByLeaseId } from "@/persistence/payment-repository";
-import { calculateRemainigBalance } from "@/application/payment-service";
-import { logger } from "@/lib/logger";
-import { LeaseReponse } from "@/domain/lease";
-import { NotFoundError, ValidationError } from "@/errors/api-errors";
+import { LeaseIdSchema } from "../../../src/lib/validation";
+import { getPaymentsByLeaseId } from "../../../src/persistence/payment-repository";
+import { calculateRemainigBalance } from "../../../src/application/payment-service";
+import { logger } from "../../../src/lib/logger";
+import { LeaseReponse } from "../..//domain/lease";
+import { NotFoundError, ValidationError } from "../../errors/api-errors";
 
 // NOTE: handle get lease path, errors are thrown heere and caught by the azure
 // NOTE: function to be handler by handlerError wrapper

@@ -1,9 +1,9 @@
 // src/persistence/payment-repository.ts
 
-import prisma from "@/lib/prisma";
+import prisma from "../lib/prisma";
 import { Payment as PrismaPayment } from "@prisma/client";
-import { Payment } from "@/domain/payment";
-import { logger } from "@/lib/logger";
+import { Payment } from "../domain/payment";
+import { logger } from "../lib/logger";
 
 export class PaymentRepositoryError extends Error {
     constructor(message: string, public readonly cause?: Error) {

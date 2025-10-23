@@ -1,11 +1,11 @@
 // src/handlers/quote/calculate-quote.ts
 
 import { HttpRequest } from "@azure/functions";
-import { QuoteInputSchema } from "@/lib/validation";
-import { calculateQuote } from "@/application/quote-service";
-import { QuoteInput, Quote } from "@/domain/quote";
-import { logger } from "@/lib/logger";
-import { ValidationError } from "@/errors/api-errors";
+import { QuoteInputSchema } from "../../lib/validation";
+import { calculateQuote } from "../../application/quote-service";
+import { QuoteInput, Quote } from "../../domain/quote";
+import { logger } from "../../lib/logger";
+import { ValidationError } from "../../errors/api-errors";
 
 
 export async function handleCalculateQuote(request: HttpRequest): Promise<Quote> {

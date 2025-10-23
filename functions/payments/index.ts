@@ -1,7 +1,6 @@
 
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import '../../src/create-paths';
-import { withAuth } from "@/lib/api-key-middleware";
+import { withAuth } from "../../src/lib/api-key-middleware";
 
 app.http("registerPayment", {
     route: "payments",
@@ -11,9 +10,9 @@ app.http("registerPayment", {
     request: HttpRequest,
     context: InvocationContext
 ): Promise<HttpResponseInit> {
-	const { handleRecordPayment } = await import("@/handlers/payment/record-payment");
-	const { logger } = await import("@/lib/logger");
-	const { handleError } = await import("@/lib/error-handler");
+	const { handleRecordPayment } = await import("../../src/handlers/payment/record-payment");
+	const { logger } = await import("../../src/lib/logger");
+	const { handleError } = await import("../../src/lib/error-handler");
 	const correlationId = request.headers.get('x-correlation-id') || context.invocationId;
 
 	try {

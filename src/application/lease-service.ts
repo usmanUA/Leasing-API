@@ -1,9 +1,9 @@
 // src/application/lease-service.ts
 
 import { v4 as uuid } from "uuid";
-import { Installment } from "@/domain/payment";
-import { LeaseInput, Lease, Money, LeaseCalculationError } from "@/domain/lease";
-import { logger } from "@/lib/logger";
+import { Installment } from "../domain/payment";
+import { LeaseInput, Lease, Money, LeaseCalculationError } from "../domain/lease";
+import { logger } from "../lib/logger";
 import { roundToCents } from "..";
 
 function addMonths(date: string, months: number): string {

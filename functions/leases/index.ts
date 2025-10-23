@@ -1,8 +1,7 @@
 
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import '../../src/create-paths';
 
-import { withAuth } from "@/lib/api-key-middleware";
+import { withAuth } from "../../src/lib/api-key-middleware";
 
 app.http("handleCreateLeases", {
     route: "leases",
@@ -12,9 +11,9 @@ app.http("handleCreateLeases", {
     request: HttpRequest,
     context: InvocationContext
     ): Promise<HttpResponseInit> {
-	const { handleError } = await import("@/lib/error-handler");
-	const { logger } = await import("@/lib/logger");
-	const { handleCreateLease } = await import("@/handlers/lease/create-lease");
+	const { logger } = await import("../../src/lib/logger");
+	const { handleError } = await import("../../src/lib/error-handler");
+	const { handleCreateLease } = await import("../../src/handlers/lease/create-lease");
 	const correlationId = request.headers.get('x-correlationId') || context.invocationId;
 	try {
 
@@ -88,9 +87,9 @@ app.http("handleGetLeases", {
 	request: HttpRequest,
 	context: InvocationContext
     ): Promise<HttpResponseInit> {
-	const { logger } = await import("@/lib/logger");
-	const { handleGetLease } = await import("@/handlers/lease/get-lease");
-	const { handleError } = await import("@/lib/error-handler");
+	const { logger } = await import("../../src/lib/logger");
+	const { handleError } = await import("../../src/lib/error-handler");
+	const { handleGetLease } = await import("../../src/handlers/lease/get-lease");
 	const correlationId = request.headers.get('x-correlationId') || context.invocationId;
 
 	try {
