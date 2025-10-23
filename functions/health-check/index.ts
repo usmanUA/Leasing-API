@@ -13,6 +13,7 @@ export async function healthCheck(
 
     try {
 	logger.info("Checking health", { correlationId });
+	context.log("DATABASE_URL exists: ", !!process.env.DATABASE_URL);
 	const dbHealth = await checkDatabaseHealth(correlationId);
 	const responseTime = Date.now() - startTime;
 

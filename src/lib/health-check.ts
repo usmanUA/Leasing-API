@@ -12,6 +12,7 @@ type HealthCheckResult = {
 };
 export async function checkDatabaseHealth(correlationId: string): Promise<HealthCheckResult> {
     try {
+	    logger.info("Health check started", { correlationId });
 	    await prisma.$queryRaw`SELECT 1`;
 	    return { status: 'healthy' };
     } catch (error) {
