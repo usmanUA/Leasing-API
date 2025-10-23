@@ -1,10 +1,10 @@
 // tests/unit/application/payment-service.test.ts
 
-import { parseLease } from "../../../src/application/lease-service";
-import { calculateRemainigBalance } from "../../../src/application/payment-service";
-import { PaymentCalculationError } from "../../../src/domain/payment";
-import { Payment } from "../../../src/domain/payment"
-import { LeaseInput } from "../../../src/domain/lease"
+import { parseLease } from "@/application/lease-service";
+import { calculateRemainigBalance } from "@/application/payment-service";
+import { PaymentCalculationError } from "@/domain/payment";
+import { Payment } from "@/domain/payment"
+import { LeaseInput } from "@/domain/lease"
 
 
 describe('Payment Service', () => {

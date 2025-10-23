@@ -2,8 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2022",
-    "outDir": "dist",
     "rootDir": ".",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,
@@ -22,9 +22,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "exactOptionalPropertyTypes": true,
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     }
   },
   "include": [

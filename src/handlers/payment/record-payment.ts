@@ -1,13 +1,13 @@
 // src/handlers/payment/record-payment.ts
 
 import { HttpRequest } from "@azure/functions";
-import { parsePayment } from "../../application/payment-service";
-import { PaymentInputSchema } from "../../lib/validation";
-import { registerPayment } from "../../persistence/payment-repository";
-import { PaymentInput } from "../../domain/payment";
-import { logger } from "../../../src/lib/logger";
-import { NotFoundError, ValidationError } from "../../errors/api-errors";
-import { Payment } from "../../domain/payment";
+import { parsePayment } from "@/application/payment-service";
+import { PaymentInputSchema } from "@/lib/validation";
+import { registerPayment } from "@/persistence/payment-repository";
+import { PaymentInput } from "@/domain/payment";
+import { logger } from "@/lib/logger";
+import { NotFoundError, ValidationError } from "@/errors/api-errors";
+import { Payment } from "@/domain/payment";
 
 // NOTE: handle register payment path, errors are thrown heere and caught by the azure
 // NOTE: function to be handler by handlerError wrapper

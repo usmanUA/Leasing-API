@@ -1,6 +1,6 @@
 // tests/unit/domain/lease.test.ts
 
-import { calculateInstallmentSchedule } from "../../../src/application/lease-service";
+import { calculateInstallmentSchedule } from "@/application/lease-service";
 describe('Lease Domain', () => {
     it("ensures domain calculations correctness", () => {
     const schedule = calculateInstallmentSchedule({

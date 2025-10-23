@@ -1,12 +1,12 @@
 // src/handlers/lease/create-lease.ts
 
-import { LeaseInputSchema } from "../../lib/validation";
-import { createLease } from "../../persistence/lease-repository";
+import { LeaseInputSchema } from "@/lib/validation";
+import { createLease } from "@/persistence/lease-repository";
 import { HttpRequest, InvocationContext } from "@azure/functions";
-import { parseLease } from "../../application/lease-service";
-import { LeaseInput, Lease } from "../../domain/lease";
-import { logger } from "../../../src/lib/logger";
-import { NotFoundError, ValidationError } from "../../errors/api-errors";
+import { parseLease } from "@/application/lease-service";
+import { LeaseInput, Lease } from "@/domain/lease";
+import { logger } from "@/lib/logger";
+import { NotFoundError, ValidationError } from "@/errors/api-errors";
 
 // NOTE: handle create lease path, errors are thrown heere and caught by the azure
 // NOTE: function to be handler by handlerError wrapper

@@ -1,8 +1,9 @@
-import { handleCalculateQuote } from "../../src/handlers/quote/calculate-quote";
+import '../../src/create-paths';
+import { handleCalculateQuote } from "@/handlers/quote/calculate-quote";
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { logger } from "../../src/lib/logger";
-import { handleError } from "../../src/lib/error-handler";
-import { withAuth } from "../../src/lib/api-key-middleware";
+import { logger } from "@/lib/logger";
+import { handleError } from "@/lib/error-handler";
+import { withAuth } from "@/lib/api-key-middleware";
 
 export async function getQuote(
     request: HttpRequest,

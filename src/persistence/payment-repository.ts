@@ -1,8 +1,9 @@
 // src/persistence/payment-repository.ts
 
-import prisma from "../lib/prisma";
-import { Payment } from "../domain/payment";
-import { logger } from "../lib/logger";
+import prisma from "@/lib/prisma";
+import { Payment as PrismaPayment } from "@prisma/client";
+import { Payment } from "@/domain/payment";
+import { logger } from "@/lib/logger";
 
 export class PaymentRepositoryError extends Error {
     constructor(message: string, public readonly cause?: Error) {
@@ -57,24 +58,28 @@ export async function registerPayment(paymentRequest: Payment): Promise<Payment 
 
 export async function getPaymentsByLeaseId(leaseId: string): Promise<Payment[] | null> {
     try {
-	const payments = await prisma.payment.findMany({
+	const dbPayments = await prisma.payment.findMany({
 	    where: { leaseId },
 	});
 
-	if (!payments) {
+	if (!dbPayments || dbPayments.length === 0) {
 	    logger.info("Lease not found in the database", { leaseId: leaseId });
 	    return null;
 	}
 
 	logger.info("Payments fetched from the database", {
             leaseId,
-            paymentCount: payments.length
+            paymentCount: dbPayments.length
         });
-	
-	return payments.map(payment => ({
-	    ...payment,
+
+	const payments: Payment[] = dbPayments.map((payment: PrismaPayment) => ({
+	    id: payment.id,
+	    leaseId: payment.leaseId,
+	    amount: payment.amount,
 	    paidAt: payment.paidAt.toISOString()
 	}));
+	
+	return payments;
     } catch (error) {
 	const errorMessage = error instanceof Error ? error.message : "Unknown database error";
         

@@ -1,6 +1,7 @@
-import { checkDatabaseHealth } from "../../src/lib/health-check";
-import { logger } from "../../src/lib/logger";
-import { handleError } from "../../src/lib/error-handler";
+import '../../src/create-paths';
+import { checkDatabaseHealth } from "@/lib/health-check";
+import { logger } from "@/lib/logger";
+import { handleError } from "@/lib/error-handler";
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 
 export async function healthCheck(

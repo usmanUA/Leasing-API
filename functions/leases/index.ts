@@ -1,9 +1,10 @@
-import { logger } from "../../src/lib/logger";
+import '../../src/create-paths';
+import { logger } from "@/lib/logger";
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { handleCreateLease } from "../../src/handlers/lease/create-lease";
-import { handleGetLease } from "../../src/handlers/lease/get-lease";
-import { withAuth } from "../../src/lib/api-key-middleware";
-import { handleError } from "../../src/lib/error-handler";
+import { handleCreateLease } from "@/handlers/lease/create-lease";
+import { handleGetLease } from "@/handlers/lease/get-lease";
+import { withAuth } from "@/lib/api-key-middleware";
+import { handleError } from "@/lib/error-handler";
 
 export async function createLease(
     request: HttpRequest,

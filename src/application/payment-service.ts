@@ -1,9 +1,9 @@
 // src/application/payment-service.ts
 
 import { v4 as uuid } from "uuid";
-import { Payment, PaymentCalculationError, PaymentInput } from "../domain/payment";
-import { Lease, Money } from "../domain/lease";
-import { logger } from "../../src/lib/logger";
+import { Payment, PaymentCalculationError, PaymentInput } from "@/domain/payment";
+import { Lease, Money } from "@/domain/lease";
+import { logger } from "@/lib/logger";
 import { roundToCents } from "..";
 
 export function parsePayment(paymentInput: PaymentInput): Payment {
