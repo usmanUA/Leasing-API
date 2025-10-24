@@ -69,3 +69,5 @@ app.http("registerPayment", {
 	}
     })
 });
+
+module.exports = {};

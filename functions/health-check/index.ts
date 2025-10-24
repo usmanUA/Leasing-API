@@ -12,3 +12,5 @@ app.http("healthCheck", {
 	return handleHealthCheck(request, context);
     }
 });
+
+module.exports = {};

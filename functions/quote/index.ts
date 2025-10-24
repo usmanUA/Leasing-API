@@ -72,3 +72,5 @@ app.http("calculateQuote", {
 	}
     })
 });
+
+module.exports = {};

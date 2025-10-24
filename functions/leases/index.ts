@@ -154,3 +154,5 @@ app.http("handleGetLeases", {
 	}
     })
 });
+
+module.exports = {};
