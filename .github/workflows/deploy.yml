@@ -42,10 +42,6 @@ jobs:
           cp package.json deployment
           cp package-lock.json deployment
           cp -r prisma deployment
-          cp functions/health-check/function.json deployment/health-check
-          cp functions/leases/function.json deployment/leases
-          cp functions/payments/function.json deployment/payments
-          cp functions/quote/function.json deployment/quote
 
       - name: Remove main entry point from package.json for Azure
         run: |
