@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { Installment } from "../domain/payment";
 import { LeaseInput, Lease, Money, LeaseCalculationError } from "../domain/lease";
 import { logger } from "../lib/logger";
-import { roundToCents } from "..";
+import { roundToCents } from "../lib/validation";
 
 function addMonths(date: string, months: number): string {
     // NOTE: Parse date creating UTC date object

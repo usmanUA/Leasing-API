@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { Payment, PaymentCalculationError, PaymentInput } from "../domain/payment";
 import { Lease, Money } from "../domain/lease";
 import { logger } from "../lib/logger";
-import { roundToCents } from "..";
+import { roundToCents } from "../lib/validation";
 
 export function parsePayment(paymentInput: PaymentInput): Payment {
     // NOTE: make up the payment for saving to the database

@@ -4,7 +4,9 @@ import { LeaseCalculationError } from "../domain/lease";
 import { QuoteCalculationError } from "../domain/quote";
 import { isAPIError, ValidationErrorDetails } from "../errors/api-errors"
 import { HttpResponseInit } from "@azure/functions";
-import { LeaseRepositoryError, PaymentCalculationError, PaymentRepositoryError } from "..";
+import { LeaseRepositoryError } from "../persistence/lease-repository";
+import { PaymentRepositoryError } from "../persistence/payment-repository";
+import { PaymentCalculationError } from "../domain/payment";
 import { logger } from "./logger";
 
 type ErrorResponse = {
