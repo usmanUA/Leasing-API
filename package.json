@@ -9,7 +9,6 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "postbuild": "prisma generate",
     "prestart": "npm run build",
     "start": "func start",
     "test": "jest",
