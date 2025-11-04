@@ -6,7 +6,9 @@
 
 generator client {
   provider = "prisma-client-js"
-  engineType = "library"
+  engineType = "binary"
+  binaryTargets = ["native", "linux-musl", "darwin-arm64", "darwin", "windows"]
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
