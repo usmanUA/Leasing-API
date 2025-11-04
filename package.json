@@ -1,14 +1,15 @@
 {
   "name": "leasing-backend",
   "version": "1.0.0",
-  "main": "dist/functions/health-check/index.js",
+  "main": "dist/functions/functions.js",
   "description": "Leasing Backend API with Azure Functions v4",
   "_moduleAliases": {
     "@": "dist"
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "tsc",
     "watch": "tsc -w",
+    "postbuild": "prisma generate",
     "prestart": "npm run build",
     "start": "func start",
     "test": "jest",
