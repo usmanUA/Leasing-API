@@ -5,7 +5,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'LeasingAPI'
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: './deployment'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   NODE_VERSION: '20.x'
 
 jobs:
@@ -30,28 +30,19 @@ jobs:
 
       - name: Fix required paths in compiled functions and modify main entry point
         run: |
-          find dist/functions -name "*.js" -type f -exec perl -i -pe 's|require\("\.\./\.\./src/|require\("./|g' {} \;
+          find dist/functions -name "*.js" -type f -exec perl -i -pe 's|require\("\.\./\.\./src/|require\("../src/|g' {} \;
+#          sed -i 's|"main": "dist/functions/\*\*/\*.js"|"main": "dist/src/functions/**/*.js"|' package.json
 
       - name: Create Azure compatible delpyment package
         run: |
           mkdir deployment
-          mv dist/functions/* dist/src
-          rm -rf dist/functions/
-          cp -r dist/* deployment
+          mv dist deployment
           cp host.json deployment
+          cp -r node_modules deployment
           cp package.json deployment
           cp package-lock.json deployment
           cp -r prisma deployment
 
-      - name: Remove main entry point from package.json for Azure
-        run: |
-          cd deployment
-          node -e "
-          const fs = require('fs');
-          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-          delete pkg.main;
-          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
-          "
 
       - name: Login to Azure
         uses: azure/login@v1
