@@ -28,9 +28,10 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
-      - name: Fix required paths in compiled functions
+      - name: Fix required paths in compiled functions and modify main entry point
         run: |
           find dist/functions -name "*.js" -type f -exec perl -i -pe 's|require\("\.\./\.\./src/|require\("../src/|g' {} \;
+          sed -i 's|"main": "dist/functions/\*\*/\*.js"|"main": "./**/*.js"|' package.json
 
       - name: Create Azure compatible delpyment package
         run: |
@@ -46,16 +47,6 @@ jobs:
           cp functions/leases/function.json deployment/leases
           cp functions/payments/function.json deployment/payments
           cp functions/quote/function.json deployment/quote
-
-      - name: Remove main entry point from package.json for Azure
-        run: |
-          cd deployment
-          node -e "
-          const fs = require('fs');
-          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-          delete pkg.main;
-          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
-          "
 
       - name: Login to Azure
         uses: azure/login@v1
