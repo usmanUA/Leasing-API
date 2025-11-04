@@ -30,7 +30,7 @@ jobs:
 
       - name: Fix required paths in compiled functions and modify main entry point
         run: |
-          find dist/functions -name "*.js" -type f -exec perl -i -pe 's|require\("\.\./\.\./src/|require\("../src/|g' {} \;
+          find dist/functions -name "*.js" -type f -exec perl -i -pe 's|require\("\.\./\.\./src/|require\("../../src/|g' {} \;
 #          sed -i 's|"main": "dist/functions/\*\*/\*.js"|"main": "dist/src/functions/**/*.js"|' package.json
 
       - name: Create Azure compatible delpyment package
