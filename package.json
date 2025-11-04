@@ -1,7 +1,7 @@
 {
   "name": "leasing-backend",
   "version": "1.0.0",
-  "main": "dist/functions/**/*.js",
+  "main": "dist/functions/health-check/index.js",
   "description": "Leasing Backend API with Azure Functions v4",
   "_moduleAliases": {
     "@": "dist"
