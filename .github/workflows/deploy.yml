@@ -43,6 +43,16 @@ jobs:
           cp package-lock.json deployment
           cp -r prisma deployment
 
+      - name: Remove main entry point from package.json for Azure
+        run: |
+          cd deployment
+          node -e "
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          delete pkg.main;
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+          "
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
