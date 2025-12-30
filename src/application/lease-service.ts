@@ -36,12 +36,10 @@ export function calculateInstallmentSchedule(input: LeaseInput) : Installment[] 
 	// NOTE: Annuity factor with annuity formula
 	const annuityFactor = (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, termMonths)) / 
 	(Math.pow(1 + monthlyInterestRate, termMonths) - 1);
-	basePayment = price * annuityFactor;
+	basePayment = roundToCents(price * annuityFactor);
     }
 
-    basePayment = roundToCents(basePayment);
-
-    let remainingBalance = price;
+    let remainingBalance = roundToCents(price);
     const installments: Installment[] = [];
 
 
@@ -127,7 +125,7 @@ export function parseLease (input: LeaseInput) : Lease {
     // NOTE: total payments should not exceed total principal + total interest + total fees
     const expectedTotal = input.price + totalInterest + totalFees;
     const difference = Math.abs(totalPayments - expectedTotal);
-    const toleratedDifference = input.termMonths;
+    const toleratedDifference = 0.01 * input.termMonths;
 
     if (difference > toleratedDifference) {
 	logger.error("Total payments not matching in calculations", {

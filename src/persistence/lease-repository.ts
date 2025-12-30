@@ -11,7 +11,7 @@ export class LeaseRepositoryError extends Error {
     }
 }
 
-export async function createLease(lease: Lease): Promise<Lease | null> {
+export async function createLease(lease: Lease): Promise<Lease> {
     try {
 	const newLease = await prisma.lease.create({
 	    data: {
@@ -30,11 +30,6 @@ export async function createLease(lease: Lease): Promise<Lease | null> {
 	    }
 
 	});
-
-	if (!newLease) {
-	    logger.info("Failed to create lease in the database", { leaseId: lease.id });
-	    return null;
-	}
 
 	logger.info("Lease created in the database", {
 	    leaseId: newLease.id,

@@ -6,7 +6,7 @@ import { HttpRequest, InvocationContext } from "@azure/functions";
 import { parseLease } from "../../../src/application/lease-service";
 import { LeaseInput, Lease } from "../../domain/lease";
 import { logger } from "../../../src/lib/logger";
-import { NotFoundError, ValidationError } from "../../errors/api-errors";
+import { ValidationError } from "../../errors/api-errors";
 
 // NOTE: handle create lease path, errors are thrown heere and caught by the azure
 // NOTE: function to be handler by handlerError wrapper
@@ -33,10 +33,6 @@ export async function handleCreateLease(context: InvocationContext, request: Htt
     const leaseInput: LeaseInput = validatedLeaseInput.data;
     const lease: Lease = parseLease(leaseInput);
     const leaseResponse = await createLease(lease);
-    if (!leaseResponse) {
-	logger.warn("Lease creation failed in the database", { leaseId: lease.id });
-	throw new NotFoundError("Lease", lease.id)
-    }
 
     logger.info("Fetched lease data", {
 	leaseId: leaseResponse.id,
